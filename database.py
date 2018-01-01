@@ -135,3 +135,10 @@ class Database:
     curr.close()
     self.conn.commit()
     return sum(ref) - sum(exp)
+
+  def get_users(self):
+    curr = self.conn.cursor()
+    curr.execute("SELECT name FROM user;")
+    r = curr.fetchall()
+    curr.close()
+    return [i[0] for i in r]
