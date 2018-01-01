@@ -18,7 +18,7 @@ class Database:
     curr = self.conn.cursor()
     curr.execute("SELECT id FROM user WHERE name=?;",(s,))
     r = curr.fetchone()
-    if len(r) == 0:
+    if r is None:
       raise AttributeError(s)
     curr.close()
     self.conn.commit()
@@ -30,7 +30,7 @@ class Database:
     curr = self.conn.cursor()
     curr.execute("SELECT id FROM item WHERE name=?;",(s,))
     r = curr.fetchone()
-    if len(r) == 0:
+    if r is None:
       raise AttributeError(s)
     curr.close()
     self.conn.commit()
