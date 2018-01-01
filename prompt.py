@@ -97,11 +97,11 @@ def user_prompt(user):
     if not s:
       continue
     cmd,*args = s
-    if cmd in user_cmd_dict:
+    if cmd in user_cmd_dict: # CMD
       user_cmd_dict[cmd](user,*args)
-    elif cmd in ['exit','quit','disconnect','logout']:
+    elif cmd in ['exit','quit','disconnect','logout']: # EXIT
       break
-    else:
+    else: # ITEM or UNKNOWN
       cmd = adapt_item(cmd)
       if args:
         print("%s takes no argument",cmd)
@@ -118,23 +118,24 @@ def user_prompt(user):
 def main_prompt():
   while True:
     username = input("[Godersi] login> ")
-    if username == "admin":
+    if username == "admin": # ADMIN
       try:
         admin_prompt()
       except EOFError:
         pass
       print("Exiting admin prompt")
       continue
-    if username in ['exit','quit','q','logout']:
+    elif username in ['exit','quit','q','logout']: # EXIT
       break
-    elif username not in d.get_users():
-      print("Unknown username:", username)
+    elif username in d.get_users(): # USER PROMPT
+      try:
+        user_prompt(username)
+      except EOFError:
+        pass
+      print("\n%s disconnected"%username)
       continue
-    try:
-      user_prompt(username)
-    except EOFError:
-      pass
-    print("\n%s disconnected"%username)
+    else: # UNKNOWN
+      print("Unknown username:", username)
 
 if __name__ == "__main__":
   try:
